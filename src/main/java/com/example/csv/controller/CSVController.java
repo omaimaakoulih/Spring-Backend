@@ -23,8 +23,10 @@ public class CSVController {
     CSVService csvService;
 
     // Gère l'upload d'un fichier CSV.
+    // Cette fonction a été minutieusement testée avec Postman.
     @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file")MultipartFile file){
+    public ResponseEntity<ResponseMessage> uploadFile(
+            @RequestParam("file")MultipartFile file){
         String massage = "";  // the message to send to the user
         if(SCVHelper.isCSVFormat(file)){
             try{
