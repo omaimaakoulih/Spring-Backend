@@ -1,5 +1,6 @@
 package com.example.csv.services;
 
+import com.example.csv.CSVReader;
 import com.example.csv.helper.SCVHelper;
 import com.example.csv.model.Tutorial;
 import com.example.csv.repo.TutorialRepository;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class CSVService {
 
     @Autowired
     TutorialRepository tutorialRepository;
+
 
     public void saveSCV(MultipartFile file){
         try{
@@ -53,4 +56,18 @@ public class CSVService {
         return "tutorial" + Math.random() + "Tuto";
     }
 
+
+    // lire un fichier .CSV au démarrage pour créer une
+    // liste des objets => Tutorials
+    public void readAndSaveCSV() {
+        try {
+            // Assuming your CSV file is located in the resources/static directory
+            List<Tutorial> tutorials = SCVHelper.csvToTutos(getClass().getResourceAsStream("/static/Tutorial.csv"));
+
+            // Save the tutorials to the database
+            tutorialRepository.saveAll(tutorials);
+        } catch (Exception e) {
+            throw new RuntimeException("fail to read and save CSV: " + e.getMessage());
+        }
+    }
 }
